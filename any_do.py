@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 from anydo.api import AnyDoAPI
 from anydo.error import AnyDoAPIError
 from getpass import getpass
