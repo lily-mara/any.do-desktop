@@ -13,9 +13,6 @@ def prompt_for_api():
 	username = input('What is your Any.do username? ')
 	password = getpass('What is your Any.do password? ')
 
-	if '@' not in username:
-		username += '@gmail.com'
-
 	return (username, password)
 
 def get_api(user_info):
