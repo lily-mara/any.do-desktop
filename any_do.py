@@ -18,7 +18,26 @@ def prompt_for_api():
 	username = input('What is your Any.do username? ')
 	password = getpass('What is your Any.do password? ')
 
-	return (username, password)
+	user_info = (username, password)
+
+	save_info(user_info)
+
+	return user_info
+
+def save_info(user_info):
+	"""
+	prompts the user to save their information with a
+	simple y/n prompt. If the user enters yes, it is saved
+	as a file 'anydo.json'
+	"""
+	username = user_info[0]
+	password = user_info[1]
+
+	save = input('Would you like to save these credentials? (y/n) ')
+	if save.lower() == 'y':
+		userdata = {'username': username, 'password': password}
+		with open('anydo.json', 'w') as outfile:
+			json.dump(userdata, outfile)
 
 def get_api(user_info):
 	"""
