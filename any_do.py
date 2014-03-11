@@ -10,12 +10,21 @@ def main():
 	print_tasks(task_list)
 
 def prompt_for_api():
+	"""
+	Prompts the user for a username and password, then returns
+	the pair of strings given by the user as a tuple.
+	"""
 	username = input('What is your Any.do username? ')
 	password = getpass('What is your Any.do password? ')
 
 	return (username, password)
 
 def get_api(user_info):
+	"""
+	Takes a tuple containing the user's information (username, password)
+	and returns an AnyDoAPI object. If the username/password is wrong,
+	or there is an authentication error, re-prompt for username/password.
+	"""
 	try:
 		api = AnyDoAPI(user_info[0], user_info[1])
 		return api
@@ -24,9 +33,16 @@ def get_api(user_info):
 		return prompt_for_api()
 
 def get_task_list(api):
+	"""
+	returns a dict containing all tasks
+	"""
 	return api.get_all_tasks()
 
 def print_tasks(task_list):
+	"""
+	Iterates through the list of tasks and prints the tiele of each
+	task separated by newlines and numbered.
+	"""
 	print()
 	print('Task list:')
 	task_names = [i['title'] for i in task_list]
