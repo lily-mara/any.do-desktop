@@ -42,8 +42,12 @@ def task_info(task):
 	epoch_creation = int(str(task['creationDate'])[:-3])
 	datetime_creation = datetime.fromtimestamp(epoch_creation).strftime('%Y-%m-%d')
 
+
 	info_string = 'Title: ' + task['title'] + '\n'
-	info_string += 'Created on: ' + str(datetime_creation)
+	info_string += 'Created on: ' + str(datetime_creation) + '\n'
+	if task['status'] == 'UNCHECKED':
+		info_string += 'Not '
+	info_string += 'Done'
 
 	return info_string
 
