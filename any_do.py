@@ -2,13 +2,41 @@
 from anydo.api import AnyDoAPI
 from anydo.error import AnyDoAPIError
 from getpass import getpass
+from datetime import datetime
+from time import strftime
+from time import localtime
 import json
 
+api = ''
+task_dict = {}
+
 def main():
+	global api
+	global task_dict
+
 	user_info = get_un_pw()
 	api = get_api(user_info)
 	task_dict = get_task_dict(api)
-	print_tasks(task_dict)
+
+	task_names = [i['title'] for i in task_dict]
+
+	print_tasks(task_names)
+
+	while True:
+		print(task_info(get_task_by_prompt(task_dict)))
+
+def get_task_by_prompt(task_dict):
+	index = int(input('Enter a task number: ')) - 1
+	return task_dict[index]
+
+def task_info(task):
+	epoch_creation = int(str(task['creationDate'])[:-3])
+	datetime_creation = datetime.fromtimestamp(epoch_creation).strftime('%Y-%m-%d')
+
+	info_string = 'Title: ' + task['title'] + '\n'
+	info_string += 'Created on: ' + str(datetime_creation)
+
+	return info_string
 
 def prompt_for_api():
 	"""
@@ -58,14 +86,13 @@ def get_task_dict(api):
 	"""
 	return api.get_all_tasks()
 
-def print_tasks(task_dict):
+def print_tasks(task_names):
 	"""
 	Iterates through the list of tasks and prints the tiele of each
 	task separated by newlines and numbered.
 	"""
 	print()
 	print('Task list:')
-	task_names = [i['title'] for i in task_dict]
 	for i in range(len(task_names)):
 		task_names[i] = str(i + 1) + '. ' + task_names[i]
 	print('\n'.join(task_names))
