@@ -24,10 +24,19 @@ def main():
 
 	while True:
 		print(task_info(get_task_by_prompt(task_dict)))
+		print()
 
 def get_task_by_prompt(task_dict):
-	index = int(input('Enter a task number: ')) - 1
-	return task_dict[index]
+	index_str  = input('Enter a task number: ')
+	try:
+		index = int(index_str) - 1
+		return task_dict[index]
+	except ValueError:
+		if index_str == 'exit':
+			exit()
+		print('Invalid Input!')
+		print()
+		return get_task_by_prompt(task_dict)
 
 def task_info(task):
 	epoch_creation = int(str(task['creationDate'])[:-3])
