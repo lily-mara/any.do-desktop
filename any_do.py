@@ -7,8 +7,8 @@ import json
 def main():
 	user_info = get_un_pw()
 	api = get_api(user_info)
-	task_list = get_task_list(api)
-	print_tasks(task_list)
+	task_dict = get_task_dict(api)
+	print_tasks(task_dict)
 
 def prompt_for_api():
 	"""
@@ -52,20 +52,20 @@ def get_api(user_info):
 		print('Invalid login')
 		return prompt_for_api()
 
-def get_task_list(api):
+def get_task_dict(api):
 	"""
 	returns a dict containing all tasks
 	"""
 	return api.get_all_tasks()
 
-def print_tasks(task_list):
+def print_tasks(task_dict):
 	"""
 	Iterates through the list of tasks and prints the tiele of each
 	task separated by newlines and numbered.
 	"""
 	print()
 	print('Task list:')
-	task_names = [i['title'] for i in task_list]
+	task_names = [i['title'] for i in task_dict]
 	for i in range(len(task_names)):
 		task_names[i] = str(i + 1) + '. ' + task_names[i]
 	print('\n'.join(task_names))
