@@ -4,9 +4,7 @@ from anydo.error import AnyDoAPIError
 from getpass import getpass
 from datetime import datetime
 from time import strftime
-from time import localtime
 import json
-import re
 
 api = ''
 task_dict = {}
