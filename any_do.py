@@ -6,6 +6,7 @@ from datetime import datetime
 from time import strftime
 from time import localtime
 import json
+import re
 
 api = ''
 task_dict = {}
@@ -20,25 +21,54 @@ def main():
 
 	task_names = [i['title'] for i in task_dict]
 
+	#print(task_dict)
+
 	print_tasks(task_names)
 
 	while True:
-		print(task_info(get_task_by_prompt(task_dict)))
+		print(task_info(get_task()))
 		print()
 
-def get_task_by_prompt(task_dict):
-	index_str  = input('Enter a task number: ')
-	try:
-		index = int(index_str) - 1
+def get_task(index=None):
+	"""
+	Returns the task at the given index as a dict. If no task is given,
+	prompt the user for a task.
+	"""
+	if index == None:
+		index_str = input('Enter a task number: ')
+		try:
+			index = int(index_str) - 1
+			return task_dict[index]
+		except ValueError:
+			if index_str == 'exit':
+				exit()
+			elif 'delete' in index_str:
+				delete_task(index_str)
+			else:
+				print('Invalid Input!')
+			print()
+			return get_task()
+	else:
 		return task_dict[index]
+
+
+def delete_task(delete_string):
+	"""
+	Takes a delete command in the format 'delete (int)' and deletes that
+	task from the server. Prompts the user for confirmation.
+	"""
+	try:
+		delete_int = int(delete_string.split(' ')[1]) - 1
+		response = input('Delete task: ' + task_dict[delete_int]['title'] + '? ')
+		if response.lower() == 'y' or response.lower() == 'yes':
+			api.delete_task_by_id(get_task(delete_int)['id'])
 	except ValueError:
-		if index_str == 'exit':
-			exit()
-		print('Invalid Input!')
-		print()
-		return get_task_by_prompt(task_dict)
+		print('You provided an incorrect delete command!')
 
 def task_info(task):
+	"""
+	Returns a string containing all important info about the given task.
+	"""
 	epoch_creation = int(str(task['creationDate'])[:-3])
 	datetime_creation = datetime.fromtimestamp(epoch_creation).strftime('%Y-%m-%d')
 
