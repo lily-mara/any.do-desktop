@@ -40,7 +40,7 @@ def get_task(index=None):
 			return task_dict[index]
 		except ValueError:
 			if index_str == 'exit':
-				sys.exit()
+				sys.exit(0)
 			elif 'delete' in index_str:
 				delete_task(index_str)
 			else:
