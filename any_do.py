@@ -5,6 +5,7 @@ from getpass import getpass
 from datetime import datetime
 from time import strftime
 import json
+import sys
 
 api = ''
 task_dict = {}
@@ -39,7 +40,7 @@ def get_task(index=None):
 			return task_dict[index]
 		except ValueError:
 			if index_str == 'exit':
-				exit()
+				sys.exit()
 			elif 'delete' in index_str:
 				delete_task(index_str)
 			else:
