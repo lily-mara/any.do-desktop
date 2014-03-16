@@ -11,22 +11,26 @@ api = ''
 task_dict = {}
 
 def main():
-	global api
-	global task_dict
-
-	user_info = get_un_pw()
-	api = get_api(user_info)
-	task_dict = get_task_dict(api)
-
-	task_names = [i['title'] for i in task_dict]
-
-	#print(task_dict)
-
-	print_tasks(task_names)
+	print_tasks(setup_tasks())
+	print()
 
 	while True:
 		print(task_info(get_task()))
 		print()
+
+def setup_tasks():
+	global task_dict
+
+	setup_api()
+
+	task_dict = get_task_dict(api)
+	return [i['title'] for i in task_dict]
+
+def setup_api():
+	global api
+
+	user_info = get_un_pw()
+	api = get_api(user_info)
 
 def get_task(index=None):
 	"""
@@ -43,6 +47,8 @@ def get_task(index=None):
 				sys.exit(0)
 			elif 'delete' in index_str:
 				delete_task(index_str)
+			elif index_str == 'ls':
+				print_tasks(setup_tasks())
 			else:
 				print('Invalid Input!')
 			print()
@@ -138,7 +144,6 @@ def print_tasks(task_names):
 	for i in range(len(task_names)):
 		task_names[i] = str(i + 1) + '. ' + task_names[i]
 	print('\n'.join(task_names))
-	print()
 
 def get_un_pw():
 	"""
